@@ -11,6 +11,14 @@ export const route = createBrowserRouter([
         path: "/",
         element: <Dashboard />,
       },
+      {
+        path: "/products/:slug",
+        element: <Dashboard />,
+      },
+      {
+        path: "/products/page/:page",
+        element: <Dashboard />,
+      },
     ],
   },
 ]);

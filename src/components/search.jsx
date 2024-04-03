@@ -1,9 +1,15 @@
 import { SearchIcon } from "lucide-react";
 import { useTransition } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { setSearchKey } from "../redux/filter/filter-slice";
 
-export default function Search({ disabled, className }) {
+export default function Search() {
+  const dispatch = useDispatch();
+  const { pathname } = useLocation();
+  const { searchKey } = useSelector((state) => state.filter);
   const [isPending, startTransition] = useTransition();
-  function handleSearch(term) {}
+  const navigate = useNavigate();
 
   return (
     <div className={"relative w-full "}>
@@ -21,14 +27,21 @@ export default function Search({ disabled, className }) {
           />
         </div>
         <input
+          defaultValue={searchKey}
           type="text"
           name="search"
           id="search"
-          disabled={disabled}
           className="h-11 block rounded-md border border-gray-200 pl-9 focus:ring-[#ccc] focus:border-none sm:text-sm w-full pr-3"
           placeholder="Search by file name..."
           spellCheck={false}
-          onChange={(e) => handleSearch(e.target.value)}
+          onChange={(e) => {
+            startTransition(() => {
+              if (pathname !== "") {
+                navigate("/");
+              }
+              dispatch(setSearchKey(e.target.value));
+            });
+          }}
         />
       </div>
 

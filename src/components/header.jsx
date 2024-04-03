@@ -1,5 +1,6 @@
 import { ShoppingCart } from "lucide-react";
 import React from "react";
+import { Link } from "react-router-dom";
 import Search from "./search";
 
 export default function Header() {
@@ -8,7 +9,9 @@ export default function Header() {
       <nav>
         <div className="container">
           <div className="flex justify-between">
-            <img src="/logo.png" alt="prime tech solutions" />
+            <Link to={"/"}>
+              <img src="/logo.png" alt="prime tech solutions" />
+            </Link>
             <ul className="flex w-full space-x-7 items-center max-w-xl">
               <li className="flex-1 ">
                 <Search />
