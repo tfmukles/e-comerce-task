@@ -32,7 +32,7 @@ export default function Search() {
           name="search"
           id="search"
           className="h-11 block rounded-md border border-gray-200 pl-9 focus:ring-[#ccc] focus:border-none sm:text-sm w-full pr-3"
-          placeholder="Search by file name..."
+          placeholder="Search by product title..."
           spellCheck={false}
           onChange={(e) => {
             startTransition(() => {

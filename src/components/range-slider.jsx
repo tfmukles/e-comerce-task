@@ -22,8 +22,8 @@ export default function RangeSlider({ maxPrice, range }) {
   return (
     <div className="px-2">
       <p className="flex justify-between">
-        <span>min: ${range.min === -Infinity ? 0 : range.min}</span>
-        <span>max: ${range.max}</span>
+        <span>MIn: ${range.min === -Infinity ? 0 : range.min}</span>
+        <span>Max: ${range.max}</span>
       </p>
       <MultiRangeSlider
         style={{ border: "none", boxShadow: "none" }}
