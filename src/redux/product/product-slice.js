@@ -1,11 +1,24 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createEntityAdapter,
+  createSlice,
+} from "@reduxjs/toolkit";
 import { getProducts } from "./product-api";
+
+const productAdapter = createEntityAdapter({
+  selectId: (product) => product.id,
+});
 
 const initialState = {
   products: [],
   isLoading: false,
   isError: false,
   error: "",
+  ...productAdapter.getInitialState({
+    isLoading: false,
+    isError: false,
+    error: "",
+  }),
 };
 
 // async thunk
@@ -29,6 +42,7 @@ export const productSlice = createSlice({
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.products = action.payload.products;
+        productAdapter.setAll(state, action.payload.products);
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.isLoading = false;
@@ -38,3 +52,7 @@ export const productSlice = createSlice({
       });
   },
 });
+
+export const productSelectors = productAdapter.getSelectors(
+  (state) => state.products
+);

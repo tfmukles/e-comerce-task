@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 
 const Pagination = ({ products }) => {
-  console.log(products);
   const { itemsPerPage } = useSelector((state) => state.filter);
   const { page } = useParams();
   const currentPage = page ? parseInt(page) : 1;

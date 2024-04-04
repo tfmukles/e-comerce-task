@@ -7,4 +7,5 @@ export const store = configureStore({
     product: productSlice.reducer,
     filter: filterSlice.reducer,
   },
+  devTools: process.env.NODE_ENV !== "production",
 });
