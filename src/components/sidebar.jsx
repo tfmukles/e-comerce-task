@@ -38,11 +38,11 @@ export default function Sidebar({ products }) {
         items={brands}
         seletedItems={seletedBrands}
         clickHandler={(item) => dispatch(setBrands(item))}
-        label={"Brands"}
+        label={"All Brands"}
       />
 
-      <p className="font-bold underline">Ratings</p>
-      <ul className="flex space-x-1">
+      <p className="font-bold border-b pb-2">Ratings</p>
+      <ul className="flex space-x-1 mb-3 mt-2">
         {[...Array(5)].map((_, i) => {
           const isActive = i + 1 <= rating;
           return (

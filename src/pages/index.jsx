@@ -51,7 +51,7 @@ export default function Dashboard() {
       <div className="container">
         <div className="grid grid-cols-4 gap-4">
           <Sidebar products={products} />
-          <div className="grid grid-cols-3 col-span-3 gap-4 mt-12">
+          <div className="grid grid-cols-3 col-span-3 gap-4 mt-4">
             <div className="col-span-3">
               <label>Items per page: </label>
               <select
@@ -60,22 +60,22 @@ export default function Dashboard() {
                   dispatch(setItemsPerPage(e.target.value));
                   navigator("/");
                 }}
-                className="border p-3 rounded inline-block mr-4"
+                className="form-select"
               >
-                <option value="10">9</option>
-                <option value="15">15</option>
-                <option value="21">21</option>
+                <option value="10">9 items</option>
+                <option value="15">15 items</option>
+                <option value="21">21 items</option>
               </select>
-              price sorting
+
               <select
                 value={sort}
                 onChange={(e) => {
                   dispatch(setSort(e.target.value));
                   navigator("/");
                 }}
-                className="border p-3 rounded"
+                className="form-select ml-3"
               >
-                <option value="">none</option>
+                <option value="">Default sorting</option>
                 <option value="desc">Price: High to low</option>
                 <option value="asc">Price: Low to low</option>
               </select>

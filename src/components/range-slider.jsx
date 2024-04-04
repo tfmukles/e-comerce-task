@@ -34,6 +34,7 @@ export default function RangeSlider({ maxPrice, range }) {
         max={`${maxPrice}`}
         maxValue={range.max || maxPrice}
         onInput={handleInput}
+        barInnerColor="#ddd"
       />
     </div>
   );

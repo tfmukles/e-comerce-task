@@ -39,6 +39,12 @@
   .pagination li:not(:last-child) a {
     @apply border-r;
   }
+
+  .form-select {
+    @apply border rounded-full px-2 py-2;
+    background-size: 0.7rem;
+    background-position: right 0.7rem center;
+  }
 }
 
 .swiper-button-prev::after,
