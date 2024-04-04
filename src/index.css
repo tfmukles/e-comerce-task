@@ -23,6 +23,22 @@
   td {
     @apply border-b p-4 pl-8;
   }
+
+  .pagination {
+    @apply inline-flex mx-auto items-center border rounded-full;
+  }
+
+  .pagination li a {
+    @apply px-4 py-3 block hover:text-orange-500;
+  }
+
+  .pagination li a.active {
+    @apply text-orange-500;
+  }
+
+  .pagination li:not(:last-child) a {
+    @apply border-r;
+  }
 }
 
 .swiper-button-prev::after,

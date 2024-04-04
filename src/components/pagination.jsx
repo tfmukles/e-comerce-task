@@ -7,53 +7,38 @@ const Pagination = ({ products }) => {
   const { page } = useParams();
   const currentPage = page ? parseInt(page) : 1;
   const totalPages = Math.ceil(products.length / itemsPerPage);
-  const indexPageLink = currentPage === 2;
   const hasPrevPage = currentPage > 1;
   const hasNextPage = totalPages > currentPage;
 
   return (
-    <ul className="text-center space-x-2 flex justify-center items-center py-5 col-span-3">
-      {hasPrevPage && (
-        <li>
-          <Link
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-            to={indexPageLink ? "/" : `/products/page/${currentPage - 1}`}
-          >
-            Prev
-          </Link>
-        </li>
-      )}
-
-      {[...Array(6).keys()].map((_, i) => {
-        if (currentPage + i + 1 > totalPages) {
-          return null;
-        }
-
-        return (
-          <li key={i}>
-            <Link
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-              to={`${
-                indexPageLink ? "/" : `/products/page/${currentPage + i + 1}`
-              }`}
-            >
-              {currentPage + i + 1}
+    products.length > 0 && (
+      <div className="text-center col-span-3 w-full my-3">
+        <ul className="pagination">
+          <li>
+            <Link to={hasPrevPage ? `/products/page/${currentPage - 1}` : "/"}>
+              Prev
             </Link>
           </li>
-        );
-      })}
+          {[...Array(totalPages).keys()].map((_, i) => {
+            const isActive = currentPage === i + 1;
+            const href = i === 0 ? "/" : `/products/page/${i + 1}`;
+            return (
+              <li key={i}>
+                <Link className={isActive ? "active" : ""} to={href}>
+                  {i + 1}
+                </Link>
+              </li>
+            );
+          })}
 
-      {hasNextPage && (
-        <li>
-          <Link
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-            to={`/products/page/${currentPage + 1}`}
-          >
-            Next
-          </Link>
-        </li>
-      )}
-    </ul>
+          <li>
+            <Link to={hasNextPage ? `/products/page/${currentPage + 1}` : "/"}>
+              Next
+            </Link>
+          </li>
+        </ul>
+      </div>
+    )
   );
 };
 

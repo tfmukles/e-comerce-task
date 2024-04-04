@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { useCart } from "../../hook/useAddCart";
 import { removeFromCart } from "../../redux/cart/cart-slice";
 import { productSelectors } from "../../redux/product/product-slice";
@@ -80,12 +81,18 @@ export default function Checkout() {
                   <td>${price?.toFixed(2)}</td>
                   <td>
                     <input
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        const product = productEntities[cart.productId];
+                        const stock = product?.stock || 0;
+                        if (+e.target.value > stock) {
+                          toast.error("The maximum quantity is " + stock);
+                          return;
+                        }
                         onChangeHanlder({
                           qty: e.target.value,
                           productId: cart.productId,
-                        })
-                      }
+                        });
+                      }}
                       className="border rounded p-2"
                       value={cart.qty}
                       type="number"
