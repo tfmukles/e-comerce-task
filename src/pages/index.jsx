@@ -14,11 +14,10 @@ import {
 export default function Dashboard() {
   const dispatch = useDispatch();
   const { page } = useParams();
+  const products = useSelector(productSelectors.selectAll);
   const { itemsPerPage, searchKey, catagories, brands, range, rating } =
     useSelector((state) => state.filter);
-  const { isLoading, products, isError, error } = useSelector(
-    (state) => state.product
-  );
+  const { isLoading, isError, error } = useSelector((state) => state.product);
 
   useEffect(() => {
     if (products.length < 1) {
@@ -52,43 +51,45 @@ export default function Dashboard() {
     return <div className="text-red-500 text-xl">{error}</div>;
   }
 
-  const text = useSelector(productSelectors.selectAll);
-
   return (
-    <div className="container">
-      <div className="grid grid-cols-4 gap-4">
-        <Sidebar products={products} />
-        <div className="grid grid-cols-3 col-span-3 gap-4 mt-12">
-          <div className="col-span-3">
-            <label>Items per page: </label>
-            <select
-              defaultValue={itemsPerPage}
-              onChange={(e) => dispatch(setItemsPerPage(e.target.value))}
-              className="border p-3 rounded col-span-"
-            >
-              <option value="10">9</option>
-              <option value="15">15</option>
-              <option value="21">21</option>
-            </select>
+    <>
+      <div className="container">
+        <div className="grid grid-cols-4 gap-4">
+          <Sidebar products={products} />
+          <div className="grid grid-cols-3 col-span-3 gap-4 mt-12">
+            <div className="col-span-3">
+              <label>Items per page: </label>
+              <select
+                defaultValue={itemsPerPage}
+                onChange={(e) => dispatch(setItemsPerPage(e.target.value))}
+                className="border p-3 rounded col-span-"
+              >
+                <option value="10">9</option>
+                <option value="15">15</option>
+                <option value="21">21</option>
+              </select>
+            </div>
+
+            <>
+              {filterdProduct.length === 0 && !isLoading ? (
+                <div className="text-center col-span-3">
+                  <h1 className="text-red-500 text-xl font-semibold">
+                    No products found
+                  </h1>
+                </div>
+              ) : (
+                filterdProduct
+                  .slice(startIndex, endIndex)
+                  .map((item, index) => {
+                    return <ProductCard {...item} key={index} />;
+                  })
+              )}
+
+              <Pagination products={filterdProduct} />
+            </>
           </div>
-
-          <>
-            {filterdProduct.length === 0 && !isLoading ? (
-              <div className="text-center col-span-3">
-                <h1 className="text-red-500 text-xl font-semibold">
-                  No products found
-                </h1>
-              </div>
-            ) : (
-              filterdProduct.slice(startIndex, endIndex).map((item, index) => {
-                return <ProductCard {...item} key={index} />;
-              })
-            )}
-
-            <Pagination products={filterdProduct} />
-          </>
         </div>
       </div>
-    </div>
+    </>
   );
 }

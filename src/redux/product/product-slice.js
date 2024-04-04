@@ -3,6 +3,7 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
+import { addToCart } from "../cart/cart-slice";
 import { getProducts } from "./product-api";
 
 const productAdapter = createEntityAdapter({
@@ -49,10 +50,18 @@ export const productSlice = createSlice({
         state.products = [];
         state.isError = true;
         state.error = action.error?.message;
+      })
+      .addCase(addToCart, (state, action) => {
+        productAdapter.updateOne(state, {
+          id: action.payload.productId,
+          changes: {
+            stock: state.entities[action.payload.productId].stock - 1,
+          },
+        });
       });
   },
 });
 
 export const productSelectors = productAdapter.getSelectors(
-  (state) => state.products
+  (state) => state.product
 );

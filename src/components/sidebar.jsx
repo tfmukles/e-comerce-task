@@ -23,9 +23,8 @@ export default function Sidebar({ products }) {
   } = useSelector((state) => state.filter);
 
   return (
-    <div className="h-screen sticky top-0 left-0 py-4 overflow-y-auto  border-r">
+    <div className="sticky h-[calc(100vh_-_89px)] bg-white top-[89px] left-0 py-4 overflow-y-auto border-r">
       <RangeSlider range={range} maxPrice={maxPrice} minPrice={0} />
-
       <Filter
         items={catagories}
         seletedItems={seletedCatagories}
