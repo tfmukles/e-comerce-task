@@ -11,6 +11,7 @@ const initialState = {
     max: 0,
   },
   rating: 5,
+  sort: "",
 };
 
 export const filterSlice = createSlice({
@@ -50,6 +51,9 @@ export const filterSlice = createSlice({
     setRating: (state, action) => {
       state.rating = action.payload;
     },
+    setSort: (state, action) => {
+      state.sort = action.payload;
+    },
   },
 });
 
@@ -61,4 +65,5 @@ export const {
   setRange,
   setBrands,
   setRating,
+  setSort,
 } = filterSlice.actions;

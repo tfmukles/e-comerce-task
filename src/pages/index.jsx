@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import Pagination from "../components/pagination";
 import ProductCard from "../components/product-card";
 import Sidebar from "../components/sidebar";
-import { setItemsPerPage } from "../redux/filter/filter-slice";
+import { setItemsPerPage, setSort } from "../redux/filter/filter-slice";
 import {
   fetchProducts,
   productSelectors,
@@ -15,7 +15,7 @@ export default function Dashboard() {
   const dispatch = useDispatch();
   const { page } = useParams();
   const products = useSelector(productSelectors.selectAll);
-  const { itemsPerPage, searchKey, catagories, brands, range, rating } =
+  const { itemsPerPage, searchKey, catagories, brands, range, rating, sort } =
     useSelector((state) => state.filter);
   const { isLoading, isError, error } = useSelector((state) => state.product);
 
@@ -28,15 +28,25 @@ export default function Dashboard() {
   const currentPage = page ? parseInt(page) : 1;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = currentPage * itemsPerPage;
-  const filterdProduct = products.filter(
-    (item) =>
-      item.title.toLowerCase().includes(searchKey.toLowerCase()) &&
-      (catagories.length === 0 || catagories.includes(item.category)) &&
-      (brands.length === 0 || brands.includes(item.brand)) &&
-      item.price >= range.min &&
-      item.price <= range.max &&
-      item.rating <= rating
-  );
+  const filterdProduct = products
+    .filter(
+      (item) =>
+        item.title.toLowerCase().includes(searchKey.toLowerCase()) &&
+        (catagories.length === 0 || catagories.includes(item.category)) &&
+        (brands.length === 0 || brands.includes(item.brand)) &&
+        item.price >= range.min &&
+        item.price <= range.max &&
+        item.rating <= rating
+    )
+    .sort((a, b) => {
+      if (sort === "asc") {
+        return a.price - b.price;
+      } else if (sort === "desc") {
+        return b.price - a.price;
+      } else {
+        return a.id - b.id;
+      }
+    });
 
   if (isLoading) {
     return (
@@ -51,6 +61,8 @@ export default function Dashboard() {
     return <div className="text-red-500 text-xl">{error}</div>;
   }
 
+  console.log({ sort });
+
   return (
     <>
       <div className="container">
@@ -60,13 +72,23 @@ export default function Dashboard() {
             <div className="col-span-3">
               <label>Items per page: </label>
               <select
-                defaultValue={itemsPerPage}
+                value={itemsPerPage}
                 onChange={(e) => dispatch(setItemsPerPage(e.target.value))}
-                className="border p-3 rounded col-span-"
+                className="border p-3 rounded inline-block mr-4"
               >
                 <option value="10">9</option>
                 <option value="15">15</option>
                 <option value="21">21</option>
+              </select>
+              price sorting
+              <select
+                value={sort}
+                onChange={(e) => dispatch(setSort(e.target.value))}
+                className="border p-3 rounded"
+              >
+                <option value="">none</option>
+                <option value="desc">Price: High to low</option>
+                <option value="asc">Price: Low to low</option>
               </select>
             </div>
 
