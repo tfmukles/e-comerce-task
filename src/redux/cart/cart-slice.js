@@ -7,35 +7,17 @@ export const cartSlice = createSlice({
   },
   reducers: {
     addToCart: (state, action) => {
-      const itemIndex = state.items.findIndex(
-        (item) => item.productId === action.payload.productId
-      );
-      if (itemIndex === -1) {
-        state.items = [...state.items, { ...action.payload, qty: 1 }];
-      } else {
-        state.items[itemIndex].qty += 1;
-      }
+      state.items = action.payload.map((item) => ({
+        productId: item.productId,
+        qty: item.qty,
+      }));
     },
-
     removeFromCart: (state, action) => {
-      console.log("removeFromCart", action.payload);
       state.items = state.items.filter(
-        (item) => item.productId !== action.payload
+        (item) => item.productId !== action.payload.productId
       );
-    },
-
-    updateMany: (state, action) => {
-      const pathItems = action.payload;
-      state.items = state.items.map((item) => {
-        const cart = pathItems.find((p) => p.productId === item.productId);
-        if (cart) {
-          return cart;
-        } else {
-          return item;
-        }
-      });
     },
   },
 });
 
-export const { addToCart, removeFromCart, updateMany } = cartSlice.actions;
+export const { addToCart, removeFromCart } = cartSlice.actions;

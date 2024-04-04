@@ -1,30 +1,20 @@
-import { Loader } from "lucide-react";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import Error from "../components/error";
+import Loading from "../components/loading";
 import Pagination from "../components/pagination";
 import ProductCard from "../components/product-card";
 import Sidebar from "../components/sidebar";
+import { useFetchProduct } from "../hook/useFetchProduct";
 import { setItemsPerPage, setSort } from "../redux/filter/filter-slice";
-import {
-  fetchProducts,
-  productSelectors,
-} from "../redux/product/product-slice";
 
 export default function Dashboard() {
+  const navigator = useNavigate();
   const dispatch = useDispatch();
   const { page } = useParams();
-  const products = useSelector(productSelectors.selectAll);
+  const { isError, isLoading, error, products } = useFetchProduct();
   const { itemsPerPage, searchKey, catagories, brands, range, rating, sort } =
     useSelector((state) => state.filter);
-  const { isLoading, isError, error } = useSelector((state) => state.product);
-
-  useEffect(() => {
-    if (products.length < 1) {
-      dispatch(fetchProducts());
-    }
-  }, []);
-
   const currentPage = page ? parseInt(page) : 1;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = currentPage * itemsPerPage;
@@ -49,19 +39,12 @@ export default function Dashboard() {
     });
 
   if (isLoading) {
-    return (
-      <div className="w-full h-screen flex justify-center items-center">
-        <Loader className="animate-spin w-5 h-5" />
-        <p>Loading...</p>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (isError && !isLoading) {
-    return <div className="text-red-500 text-xl">{error}</div>;
+    return <Error error={error} />;
   }
-
-  console.log({ sort });
 
   return (
     <>
@@ -73,7 +56,10 @@ export default function Dashboard() {
               <label>Items per page: </label>
               <select
                 value={itemsPerPage}
-                onChange={(e) => dispatch(setItemsPerPage(e.target.value))}
+                onChange={(e) => {
+                  dispatch(setItemsPerPage(e.target.value));
+                  navigator("/");
+                }}
                 className="border p-3 rounded inline-block mr-4"
               >
                 <option value="10">9</option>
@@ -83,7 +69,10 @@ export default function Dashboard() {
               price sorting
               <select
                 value={sort}
-                onChange={(e) => dispatch(setSort(e.target.value))}
+                onChange={(e) => {
+                  dispatch(setSort(e.target.value));
+                  navigator("/");
+                }}
                 className="border p-3 rounded"
               >
                 <option value="">none</option>

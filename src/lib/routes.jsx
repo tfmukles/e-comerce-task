@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Layout from "../components/layout";
 import Dashboard from "../pages";
 import Checkout from "../pages/checkout";
+import ProductSingle from "../pages/products/[slug]";
 
 export const route = createBrowserRouter([
   {
@@ -18,7 +19,7 @@ export const route = createBrowserRouter([
       },
       {
         path: "/products/:slug",
-        element: <Dashboard />,
+        element: <ProductSingle />,
       },
       {
         path: "/products/page/:page",

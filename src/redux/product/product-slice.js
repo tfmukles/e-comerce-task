@@ -3,10 +3,10 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
-import { addToCart } from "../cart/cart-slice";
+import { removeFromCart } from "../cart/cart-slice";
 import { getProducts } from "./product-api";
 
-const productAdapter = createEntityAdapter({
+export const productAdapter = createEntityAdapter({
   selectId: (product) => product.id,
 });
 
@@ -34,6 +34,23 @@ export const fetchProducts = createAsyncThunk(
 export const productSlice = createSlice({
   name: "products",
   initialState,
+  reducers: {
+    productsUpdate: (state, action) => {
+      productAdapter.updateMany(
+        state,
+        action.payload.map((item) => {
+          return {
+            id: item.productId,
+            changes: {
+              stock:
+                state.entities[item.productId].stock -
+                (item.diffQty || item.qty),
+            },
+          };
+        })
+      );
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => {
@@ -51,11 +68,13 @@ export const productSlice = createSlice({
         state.isError = true;
         state.error = action.error?.message;
       })
-      .addCase(addToCart, (state, action) => {
+      .addCase(removeFromCart, (state, action) => {
         productAdapter.updateOne(state, {
           id: action.payload.productId,
           changes: {
-            stock: state.entities[action.payload.productId].stock - 1,
+            stock:
+              state.entities[action.payload.productId].stock +
+              action.payload.qty,
           },
         });
       });
@@ -65,3 +84,5 @@ export const productSlice = createSlice({
 export const productSelectors = productAdapter.getSelectors(
   (state) => state.product
 );
+
+export const { productsUpdate } = productSlice.actions;

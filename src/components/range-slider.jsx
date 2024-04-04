@@ -1,11 +1,13 @@
 import MultiRangeSlider from "multi-range-slider-react";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { setRange } from "../redux/filter/filter-slice";
 export default function RangeSlider({ maxPrice, range }) {
   const dispatch = useDispatch();
   const [minValue, set_minValue] = useState(0);
   const [maxValue, set_maxValue] = useState(2000);
+  const navigate = useNavigate();
 
   const handleInput = (e) => {
     set_minValue(e.minValue);
@@ -14,6 +16,7 @@ export default function RangeSlider({ maxPrice, range }) {
 
   useEffect(() => {
     dispatch(setRange({ min: minValue, max: maxValue }));
+    navigate("/");
   }, [minValue, maxValue]);
 
   return (

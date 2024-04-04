@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   setBrands,
   setCatagories,
@@ -10,6 +11,7 @@ import RangeSlider from "./range-slider";
 
 export default function Sidebar({ products }) {
   const dispatch = useDispatch();
+  const navigator = useNavigate();
   const catagories = Array.from(
     new Set(products?.map((item) => item.category))
   );
@@ -45,7 +47,13 @@ export default function Sidebar({ products }) {
           const isActive = i + 1 <= rating;
           return (
             <li key={i}>
-              <button type="button" onClick={() => dispatch(setRating(i + 1))}>
+              <button
+                type="button"
+                onClick={() => {
+                  dispatch(setRating(i + 1));
+                  navigator("/");
+                }}
+              >
                 <Star
                   fill="currentColor"
                   className={isActive ? "text-yellow-500" : "text-gray-400"}

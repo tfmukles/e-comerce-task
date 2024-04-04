@@ -15,7 +15,7 @@ export default function Header() {
   }, [pathname]);
 
   return (
-    <header className="py-4 sticky top-0 left-0 w-full bg-white border-b">
+    <header className="py-4 z-50 sticky top-0 left-0 w-full bg-white border-b">
       <nav>
         <div className="container">
           <div className="flex justify-between">

@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 export default function Filter({ items, seletedItems, clickHandler, label }) {
+  const navigate = useNavigate();
   return (
     <>
       <p className="font-bold underline">{label}</p>
@@ -8,7 +11,10 @@ export default function Filter({ items, seletedItems, clickHandler, label }) {
           return (
             <li key={item}>
               <button
-                onClick={() => clickHandler(item)}
+                onClick={() => {
+                  clickHandler(item);
+                  navigate("/");
+                }}
                 className={`border m-1 p-2 rounded ${
                   isActive ? "bg-yellow-500" : ""
                 }`}

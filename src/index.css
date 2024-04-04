@@ -24,3 +24,8 @@
     @apply border-b p-4 pl-8;
   }
 }
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 28px !important;
+}
