@@ -1,0 +1,13 @@
+{
+  "media": {
+    "root": "src/assets",
+    "public": "src"
+  },
+  "content": {
+    "root": "src"
+  },
+  "themeConfig": [
+    ".eslintrc.cjs"
+  ],
+  "arrangement": {}
+}
